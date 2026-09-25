@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Наша история любви ❤️" />
+    <title>❤️ Наша история</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!-- Канвас с падающими сердечками -->
+    <canvas id="heartsCanvas"></canvas>
+
+    <!-- Кнопки управления (музыка + тема) -->
+    <div class="top-controls">
+      <button id="musicBtn" class="control-btn" title="Включить музыку">
+        🎵
+      </button>
+      <button id="themeBtn" class="control-btn" title="Сменить тему">🌙</button>
+    </div>
+
+    <!-- Заголовок -->
+    <header class="hero">
+      <div class="hero-content">
+        <h1 class="fade-in">❤️ Наша история</h1>
+        <p class="fade-in delay-1">Каждый момент с тобой — бесценен</p>
+
+        <!-- Счётчик дней вместе -->
+        <div class="counter fade-in delay-2">
+          <div class="counter-item">
+            <span id="daysCount">0</span>
+            <small>дней</small>
+          </div>
+          <div class="counter-item">
+            <span id="hoursCount">0</span>
+            <small>часов</small>
+          </div>
+          <div class="counter-item">
+            <span id="minutesCount">0</span>
+            <small>минут</small>
+          </div>
+          <div class="counter-item">
+            <span id="secondsCount">0</span>
+            <small>секунд</small>
+          </div>
+        </div>
+        <p class="counter-label fade-in delay-2">
+          вместе с <span id="togetherDateLabel">14.02.2025</span>
+        </p>
+
+        <div class="scroll-down">↓</div>
+      </div>
+    </header>
+
+    <!-- Таймлайн -->
+    <main class="timeline">
+      <!-- Событие 1 -->
+      <section class="event reveal">
+        <div class="event-dot"></div>
+        <div class="event-content">
+          <span class="event-number">1</span>
+          <h2>Всё началось здесь</h2>
+          <p class="event-date">📅 14 февраля 2025</p>
+          <p class="event-text">
+            «В тот день мы познакомились и ещё не знали, насколько важным станет
+            это знакомство.»
+          </p>
+          <div class="event-photo">
+            <img src="images/photo1.jpg" alt="Фото с того дня" loading="lazy" />
+            <span class="photo-caption">📸 Фото с того дня</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Событие 2 -->
+      <section class="event reveal">
+        <div class="event-dot"></div>
+        <div class="event-content">
+          <span class="event-number">2</span>
+          <h2>Первые разговоры 💬</h2>
+          <p class="event-text">«Сначала мы просто переписывались часами…»</p>
+          <div class="event-photo">
+            <img
+              src="images/photo2.jpg"
+              alt="Скриншот переписки"
+              loading="lazy"
+            />
+            <span class="photo-caption">📸 Скриншот переписки</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Событие 3 -->
+      <section class="event reveal">
+        <div class="event-dot"></div>
+        <div class="event-content">
+          <span class="event-number">3</span>
+          <h2>Наша первая встреча</h2>
+          <p class="event-date">📍 Бишкек</p>
+          <p class="event-text">«Я до сих пор помню тот день…»</p>
+          <div class="event-photo">
+            <video controls poster="images/photo3.jpg">
+              <source src="images/video1.mp4" type="video/mp4" />
+            </video>
+            <span class="photo-caption">🎥 Видео с первой встречи</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Событие 4 - карточки -->
+      <section class="event reveal">
+        <div class="event-dot"></div>
+        <div class="event-content">
+          <span class="event-number">4</span>
+          <h2>Самые счастливые моменты</h2>
+          <div class="cards-grid">
+            <div
+              class="card"
+              data-message="Помнишь ту прогулку? Я до сих пор улыбаюсь, когда вспоминаю 🌆"
+              data-photo="images/moment1.jpg"
+            >
+              <div class="card-emoji">🌆</div>
+              <h3>Наша первая прогулка</h3>
+            </div>
+            <div
+              class="card"
+              data-message="Первая поездка! Тогда я понял, что хочу путешествовать только с тобой 🚗"
+              data-photo="images/moment2.jpg"
+            >
+              <div class="card-emoji">🚗</div>
+              <h3>Первая поездка</h3>
+            </div>
+            <div
+              class="card"
+              data-message="Тот вечер был волшебным. Звёзды, ты и тишина 🌙"
+              data-photo="images/moment3.jpg"
+            >
+              <div class="card-emoji">🌙</div>
+              <h3>Тот самый вечер</h3>
+            </div>
+            <div
+              class="card"
+              data-message="Наши любимые места — там, где мы были вместе ❤️"
+              data-photo="images/moment4.jpg"
+            >
+              <div class="card-emoji">❤️</div>
+              <h3>Наши любимые места</h3>
+            </div>
+          </div>
+          <p class="card-hint">Нажми на карточку 👆</p>
+        </div>
+      </section>
+
+      <!-- Слайдер фото -->
+      <section class="event reveal">
+        <div class="event-dot"></div>
+        <div class="event-content">
+          <span class="event-number">5</span>
+          <h2>Наша галерея 📷</h2>
+          <div class="slider">
+            <button class="slider-btn prev" aria-label="Назад">‹</button>
+            <div class="slider-track" id="sliderTrack">
+              <img src="images/photo1.jpg" alt="Фото 1" />
+              <img src="images/photo2.jpg" alt="Фото 2" />
+              <img src="images/photo3.jpg" alt="Фото 3" />
+              <img src="images/photo4.jpg" alt="Фото 4" />
+              <img src="images/photo5.jpg" alt="Фото 5" />
+            </div>
+            <button class="slider-btn next" aria-label="Вперёд">›</button>
+            <div class="slider-dots" id="sliderDots"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Таймер до годовщины -->
+      <section class="event reveal">
+        <div class="event-dot"></div>
+        <div class="event-content anniversary-block">
+          <h2>🎂 До нашей годовщины осталось</h2>
+          <div class="anniversary-counter" id="anniversaryCounter">
+            <div class="counter-item">
+              <span id="annDays">0</span><small>дней</small>
+            </div>
+            <div class="counter-item">
+              <span id="annHours">0</span><small>часов</small>
+            </div>
+            <div class="counter-item">
+              <span id="annMinutes">0</span><small>минут</small>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Финал -->
+      <section class="event reveal final-event">
+        <div class="event-dot"></div>
+        <div class="event-content">
+          <h2>💌 И сейчас…</h2>
+          <p class="event-text big">
+            «Я не знаю, что ждёт нас впереди, но точно знаю, что хочу продолжать
+            эту историю вместе с тобой.»
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <!-- Сюрприз-кнопка -->
+    <section class="surprise-section reveal">
+      <button id="surpriseBtn" class="btn-surprise">🎁 Открыть сюрприз</button>
+      <div id="surpriseContent" class="surprise-content">
+        <p class="surprise-text">
+          Ты — самое лучшее, что случилось со мной. 💖<br />
+          Спасибо, что ты рядом. Я люблю тебя больше, чем можно выразить
+          словами.
+        </p>
+      </div>
+    </section>
+
+    <!-- Форма ответа -->
+    <section class="answer-section reveal">
+      <h2>Напиши мне свой ответ 💌</h2>
+      <form id="answerForm">
+        <textarea
+          id="answerText"
+          placeholder="Твой ответ..."
+          required
+          maxlength="1000"
+        ></textarea>
+        <button type="submit" class="btn-primary">
+          ❤️ Продолжить нашу историю
+        </button>
+      </form>
+      <p id="formStatus" class="form-status"></p>
+    </section>
+
+    <!-- QR-код -->
+
+    <footer>
+      <p>Сделано с ❤️ для тебя</p>
+    </footer>
+
+    <!-- Модальное окно для карточек -->
+    <div id="modal" class="modal">
+      <div class="modal-content">
+        <button class="modal-close" id="modalClose">×</button>
+        <img id="modalImage" class="modal-image" src="" alt="Фото момента" />
+        <p id="modalText"></p>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+    <script src="js/script.js"></script>
+  </body>
+</html>
