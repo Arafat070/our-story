@@ -4,16 +4,111 @@
 const TELEGRAM_BOT_TOKEN = "8943646784:AAHGSWpQDa6O1DH32N4dHD49P9-pZbKWdx8";
 const TELEGRAM_CHAT_ID = "6209207346";
 
-// 📅 Дата начала отношений (ГОД, МЕСЯЦ-1, ДЕНЬ, ЧАС, МИНУТА)
-// Внимание: месяц считается с 0 (январь = 0, февраль = 1)
-const START_DATE = new Date(2025, 1, 14, 0, 0, 0); // 14 февраля 2025
+// 📅 Дата начала отношений
+const START_DATE = new Date(2025, 1, 14, 0, 0, 0);
 
-// 🎂 Месяц и день годовщины
-const ANNIVERSARY_MONTH = 1; // февраль = 1
+// 🎂 Годовщина
+const ANNIVERSARY_MONTH = 1;
 const ANNIVERSARY_DAY = 14;
 
+// 💬 Комплименты для дартса
+const DARTS_COMPLIMENTS = [
+  "Твоя улыбка — моё любимое зрелище в мире 💖",
+  "Ты самая красивая, когда просто смеёшься 💘",
+  "С тобой каждый день — это праздник 💝",
+  "Твои глаза ярче всех звёзд 💗",
+  "Ты делаешь меня лучше каждый день 💓",
+  "Я люблю тебя больше, чем вчера, но меньше, чем завтра ❤️",
+];
+
+// 🔮 Предсказания для карт
+const FORTUNES = [
+  "Скоро вас ждёт незабываемое путешествие вдвоём ✈️",
+  "Ваша любовь будет расти с каждым днём 📈💕",
+  "Вас ждёт много тёплых вечеров вместе 🌙",
+  "Следующий год принесёт вам много радостных моментов 🎉",
+  "Вы станете ещё ближе друг к другу 💞",
+  "Вас ждёт романтический сюрприз 💐",
+  "Ваша история будет долгой и счастливой 📖",
+  "Скоро сбудется мечта, о которой вы говорили 🌟",
+  "Вы будете смеяться вместе до самого утра 😄",
+  "Судьба приготовила вам что-то особенное 🎁",
+  "Ваша любовь пройдёт через все испытания 💪❤️",
+  "Каждый день с тобой — это подарок 🎀",
+];
+
 // ==========================================================
-// 🎨 ПАДАЮЩИЕ СЕРДЕЧКИ (Canvas)
+// 💝 ОТКРЫТКА ПРИ ВХОДЕ + МУЗЫКА
+// ==========================================================
+const greetingCard = document.getElementById("greetingCard");
+const envelope = document.getElementById("envelope");
+const musicBtn = document.getElementById("musicBtn");
+let bgMusic = null;
+let musicStarted = false;
+
+// Блокируем скролл пока открытка открыта
+document.body.classList.add("locked");
+
+envelope.addEventListener("click", () => {
+  envelope.classList.add("open");
+
+  // Запускаем музыку сразу после клика
+  if (!bgMusic) {
+    bgMusic = new Audio("music/letali.mp3");
+    bgMusic.loop = true;
+
+    bgMusic.addEventListener("ended", () => {
+      musicBtn.textContent = "🎵";
+      musicBtn.classList.remove("playing");
+    });
+  }
+
+  if (bgMusic.paused) {
+    bgMusic
+      .play()
+      .then(() => {
+        musicBtn.textContent = "⏸";
+        musicBtn.classList.add("playing");
+        musicStarted = true;
+      })
+      .catch((err) => {
+        console.log("Автовоспроизведение не сработало:", err);
+      });
+  }
+
+  // Через секунду закрываем открытку
+  setTimeout(() => {
+    greetingCard.classList.add("hidden");
+    document.body.classList.remove("locked");
+
+    // Через ещё 0.8 сек полностью удаляем из DOM (по желанию)
+    setTimeout(() => {
+      greetingCard.style.display = "none";
+    }, 800);
+  }, 1400);
+});
+
+// Кнопка музыки (работает и после открытки)
+musicBtn.addEventListener("click", () => {
+  if (!bgMusic) {
+    bgMusic = new Audio("music/letali.mp3");
+    bgMusic.loop = true;
+  }
+
+  if (bgMusic.paused) {
+    bgMusic.play().then(() => {
+      musicBtn.textContent = "⏸";
+      musicBtn.classList.add("playing");
+    });
+  } else {
+    bgMusic.pause();
+    musicBtn.textContent = "🎵";
+    musicBtn.classList.remove("playing");
+  }
+});
+
+// ==========================================================
+// 🎨 ПАДАЮЩИЕ СЕРДЕЧКИ
 // ==========================================================
 const canvas = document.getElementById("heartsCanvas");
 const ctx = canvas.getContext("2d");
@@ -34,7 +129,6 @@ function createHeart() {
     y: -50,
     size: 12 + Math.random() * 18,
     speed: 0.5 + Math.random() * 1.2,
-    sway: Math.random() * 2 - 1,
     swayPhase: Math.random() * Math.PI * 2,
     emoji: HEART_EMOJIS[Math.floor(Math.random() * HEART_EMOJIS.length)],
     opacity: 0.4 + Math.random() * 0.5,
@@ -49,7 +143,6 @@ setInterval(() => {
 
 function drawHearts() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-
   hearts.forEach((h, i) => {
     h.y += h.speed;
     h.swayPhase += 0.02;
@@ -68,13 +161,12 @@ function drawHearts() {
 
     if (h.y > canvas.height + 50) hearts.splice(i, 1);
   });
-
   requestAnimationFrame(drawHearts);
 }
 drawHearts();
 
 // ==========================================================
-// 🌙 ПЕРЕКЛЮЧАТЕЛЬ ТЕМЫ
+// 🌙 ТЕМА
 // ==========================================================
 const themeBtn = document.getElementById("themeBtn");
 const savedTheme = localStorage.getItem("theme");
@@ -92,41 +184,7 @@ themeBtn.addEventListener("click", () => {
 });
 
 // ==========================================================
-// 🎵 МУЗЫКА — «Летали» (Ulukmanapo)
-// ==========================================================
-const musicBtn = document.getElementById("musicBtn");
-let bgMusic = null;
-
-musicBtn.addEventListener("click", () => {
-  if (!bgMusic) {
-    bgMusic = new Audio("music/letali.mp3");
-    bgMusic.loop = true;
-
-    bgMusic.addEventListener("ended", () => {
-      musicBtn.textContent = "🎵";
-      musicBtn.classList.remove("playing");
-    });
-  }
-
-  if (bgMusic.paused) {
-    bgMusic
-      .play()
-      .then(() => {
-        musicBtn.textContent = "⏸";
-        musicBtn.classList.add("playing");
-      })
-      .catch((err) => {
-        console.log("Ошибка воспроизведения:", err);
-      });
-  } else {
-    bgMusic.pause();
-    musicBtn.textContent = "🎵";
-    musicBtn.classList.remove("playing");
-  }
-});
-
-// ==========================================================
-// 📜 АНИМАЦИЯ ПОЯВЛЕНИЯ ПРИ ПРОКРУТКЕ
+// 📜 REVEAL
 // ==========================================================
 const revealElements = document.querySelectorAll(".reveal");
 const revealObserver = new IntersectionObserver(
@@ -141,41 +199,28 @@ const revealObserver = new IntersectionObserver(
 revealElements.forEach((el) => revealObserver.observe(el));
 
 // ==========================================================
-// ⏱️ СЧЁТЧИК ДНЕЙ ВМЕСТЕ
+// ⏱️ СЧЁТЧИК ВМЕСТЕ
 // ==========================================================
 const daysCount = document.getElementById("daysCount");
 const hoursCount = document.getElementById("hoursCount");
 const minutesCount = document.getElementById("minutesCount");
 const secondsCount = document.getElementById("secondsCount");
 const togetherDateLabel = document.getElementById("togetherDateLabel");
-
 const fmt = (n) => String(n).padStart(2, "0");
+
 togetherDateLabel.textContent = `${fmt(START_DATE.getDate())}.${fmt(START_DATE.getMonth() + 1)}.${START_DATE.getFullYear()}`;
 
 function updateTogetherCounter() {
   const now = new Date();
   const diff = now - START_DATE;
+  if (diff < 0) return;
 
-  if (diff < 0) {
-    daysCount.textContent = "0";
-    hoursCount.textContent = "0";
-    minutesCount.textContent = "0";
-    secondsCount.textContent = "0";
-    return;
-  }
-
-  const totalSeconds = Math.floor(diff / 1000);
-  const days = Math.floor(totalSeconds / 86400);
-  const hours = Math.floor((totalSeconds % 86400) / 3600);
-  const minutes = Math.floor((totalSeconds % 3600) / 60);
-  const seconds = totalSeconds % 60;
-
-  daysCount.textContent = days;
-  hoursCount.textContent = fmt(hours);
-  minutesCount.textContent = fmt(minutes);
-  secondsCount.textContent = fmt(seconds);
+  const t = Math.floor(diff / 1000);
+  daysCount.textContent = Math.floor(t / 86400);
+  hoursCount.textContent = fmt(Math.floor((t % 86400) / 3600));
+  minutesCount.textContent = fmt(Math.floor((t % 3600) / 60));
+  secondsCount.textContent = fmt(t % 60);
 }
-
 updateTogetherCounter();
 setInterval(updateTogetherCounter, 1000);
 
@@ -196,22 +241,16 @@ function updateAnniversary() {
       ANNIVERSARY_DAY,
     );
 
-  const diff = target - now;
-  const totalSeconds = Math.floor(diff / 1000);
-  const days = Math.floor(totalSeconds / 86400);
-  const hours = Math.floor((totalSeconds % 86400) / 3600);
-  const minutes = Math.floor((totalSeconds % 3600) / 60);
-
-  annDays.textContent = days;
-  annHours.textContent = fmt(hours);
-  annMinutes.textContent = fmt(minutes);
+  const t = Math.floor((target - now) / 1000);
+  annDays.textContent = Math.floor(t / 86400);
+  annHours.textContent = fmt(Math.floor((t % 86400) / 3600));
+  annMinutes.textContent = fmt(Math.floor((t % 3600) / 60));
 }
-
 updateAnniversary();
 setInterval(updateAnniversary, 60000);
 
 // ==========================================================
-// 🎠 СЛАЙДЕР ФОТО
+// 🎠 СЛАЙДЕР
 // ==========================================================
 const track = document.getElementById("sliderTrack");
 const slides = track ? Array.from(track.children) : [];
@@ -227,7 +266,6 @@ if (slides.length > 0) {
     dot.addEventListener("click", () => goToSlide(i));
     dotsContainer.appendChild(dot);
   });
-
   const dots = Array.from(dotsContainer.children);
 
   function goToSlide(i) {
@@ -251,13 +289,11 @@ if (slides.length > 0) {
     },
     { passive: true },
   );
-
   track.addEventListener("touchend", (e) => {
     if (!isDragging) return;
     const diff = e.changedTouches[0].clientX - startX;
-    if (Math.abs(diff) > 50) {
+    if (Math.abs(diff) > 50)
       goToSlide(diff > 0 ? currentSlide - 1 : currentSlide + 1);
-    }
     isDragging = false;
   });
 
@@ -265,7 +301,7 @@ if (slides.length > 0) {
 }
 
 // ==========================================================
-// 💬 МОДАЛЬНОЕ ОКНО ДЛЯ КАРТОЧЕК (с фото)
+// 💬 МОДАЛЬНОЕ ОКНО КАРТОЧЕК
 // ==========================================================
 const modal = document.getElementById("modal");
 const modalText = document.getElementById("modalText");
@@ -274,22 +310,15 @@ const modalClose = document.getElementById("modalClose");
 
 document.querySelectorAll(".card").forEach((card) => {
   card.addEventListener("click", () => {
-    const message = card.dataset.message || "";
+    modalText.textContent = card.dataset.message || "";
     const photo = card.dataset.photo || "";
-
-    modalText.textContent = message;
-
     if (photo) {
       modalImage.src = photo;
       modalImage.style.display = "block";
-      modalImage.onerror = () => {
-        modalImage.style.display = "none";
-      };
+      modalImage.onerror = () => (modalImage.style.display = "none");
     } else {
       modalImage.style.display = "none";
-      modalImage.src = "";
     }
-
     modal.classList.add("open");
   });
 });
@@ -297,7 +326,6 @@ document.querySelectorAll(".card").forEach((card) => {
 function closeModal() {
   modal.classList.remove("open");
 }
-
 modalClose.addEventListener("click", closeModal);
 modal.addEventListener("click", (e) => {
   if (e.target === modal) closeModal();
@@ -307,22 +335,152 @@ document.addEventListener("keydown", (e) => {
 });
 
 // ==========================================================
-// 🎁 СЮРПРИЗ-КНОПКА
+// 💌 КОНВЕРТ С ПИСЬМОМ
+// ==========================================================
+const letterEnvelope = document.getElementById("letterEnvelope");
+letterEnvelope.addEventListener("click", () => {
+  letterEnvelope.classList.toggle("open");
+});
+
+// ==========================================================
+// 🎯 ДАРТС С СЕРДЕЧКАМИ
+// ==========================================================
+// ==========================================================
+// 🎯 ДАРТС С СЕРДЕЧКАМИ
+// ==========================================================
+const dartTargets = document.querySelectorAll(".dart-target");
+const dartsMessage = document.getElementById("dartsMessage");
+const dartsScore = document.getElementById("dartsScore");
+const dartsTotal = document.getElementById("dartsTotal");
+const dartsResetBtn = document.getElementById("dartsResetBtn");
+
+let hitCount = 0;
+let totalCount = 0;
+let usedCompliments = [];
+let gameFinished = false;
+
+dartsTotal.textContent = dartTargets.length;
+
+function resetDartsGame() {
+  hitCount = 0;
+  totalCount = 0;
+  usedCompliments = [];
+  gameFinished = false;
+
+  dartsScore.textContent = "0";
+  dartsTotal.textContent = dartTargets.length;
+  dartsMessage.textContent = "Нажми на любое сердечко 🎯";
+  dartsResetBtn.style.display = "none";
+
+  dartTargets.forEach((t) => {
+    t.classList.remove("hit", "miss");
+    t.style.pointerEvents = "auto";
+    t.style.opacity = "1";
+  });
+}
+
+dartTargets.forEach((target) => {
+  target.addEventListener("click", () => {
+    if (gameFinished) return;
+    if (target.classList.contains("hit")) return;
+
+    totalCount++;
+    dartsTotal.textContent = totalCount;
+
+    // 75% шанс попадания
+    const isHit = Math.random() < 0.75;
+
+    if (isHit) {
+      target.classList.add("hit");
+      hitCount++;
+      dartsScore.textContent = hitCount;
+
+      // Выбираем комплимент, который ещё не использовался
+      let available = DARTS_COMPLIMENTS.filter(
+        (c) => !usedCompliments.includes(c),
+      );
+      if (available.length === 0) {
+        usedCompliments = [];
+        available = DARTS_COMPLIMENTS;
+      }
+      const compliment =
+        available[Math.floor(Math.random() * available.length)];
+      usedCompliments.push(compliment);
+
+      dartsMessage.textContent = compliment;
+      dartsMessage.style.animation = "none";
+      void dartsMessage.offsetWidth;
+      dartsMessage.style.animation = "fadeInModal 0.5s ease";
+
+      // Все мишени сбиты → финал
+      if (hitCount === dartTargets.length) {
+        gameFinished = true;
+        setTimeout(() => {
+          dartsMessage.textContent =
+            "Ты попала в моё сердце с первого взгляда 💘";
+          dartsResetBtn.style.display = "inline-block";
+        }, 1200);
+      }
+    } else {
+      target.classList.add("miss");
+      setTimeout(() => target.classList.remove("miss"), 400);
+      dartsMessage.textContent = "Ой, промах! Попробуй ещё раз 😊";
+      dartsMessage.style.animation = "none";
+      void dartsMessage.offsetWidth;
+      dartsMessage.style.animation = "fadeInModal 0.5s ease";
+    }
+  });
+});
+
+dartsResetBtn.addEventListener("click", resetDartsGame);
+// ==========================================================
+// 🃏 КАРТЫ С ПРЕДСКАЗАНИЯМИ
+// ==========================================================
+const drawCardBtn = document.getElementById("drawCardBtn");
+const fortuneCard = document.getElementById("fortuneCard");
+const fortuneText = document.getElementById("fortuneText");
+let usedFortunes = [];
+
+drawCardBtn.addEventListener("click", () => {
+  drawCardBtn.disabled = true;
+  drawCardBtn.textContent = "🔮 Гадаю...";
+
+  // Скрываем карту
+  fortuneCard.classList.remove("show");
+
+  setTimeout(() => {
+    // Выбираем предсказание
+    let available = FORTUNES.filter((f) => !usedFortunes.includes(f));
+    if (available.length === 0) {
+      usedFortunes = [];
+      available = FORTUNES;
+    }
+    const fortune = available[Math.floor(Math.random() * available.length)];
+    usedFortunes.push(fortune);
+
+    fortuneText.textContent = fortune;
+    fortuneCard.classList.add("show");
+
+    drawCardBtn.disabled = false;
+    drawCardBtn.textContent = "🃏 Вытянуть ещё";
+  }, 700);
+});
+
+// ==========================================================
+// 🎁 СЮРПРИЗ
 // ==========================================================
 const surpriseBtn = document.getElementById("surpriseBtn");
 const surpriseContent = document.getElementById("surpriseContent");
 
 surpriseBtn.addEventListener("click", () => {
   surpriseContent.classList.toggle("open");
-  if (surpriseContent.classList.contains("open")) {
-    surpriseBtn.textContent = "💝 Закрыть сюрприз";
-  } else {
-    surpriseBtn.textContent = "🎁 Открыть сюрприз";
-  }
+  surpriseBtn.textContent = surpriseContent.classList.contains("open")
+    ? "💝 Закрыть сюрприз"
+    : "🎁 Открыть сюрприз";
 });
 
 // ==========================================================
-// 📩 ФОРМА ОТВЕТА → TELEGRAM
+// 📩 ФОРМА → TELEGRAM
 // ==========================================================
 const answerForm = document.getElementById("answerForm");
 const formStatus = document.getElementById("formStatus");
@@ -358,26 +516,18 @@ answerForm.addEventListener("submit", async (e) => {
         }),
       },
     );
-
     const data = await response.json();
-
     if (data.ok) {
       formStatus.textContent = "Спасибо! Твой ответ отправлен ❤️";
       formStatus.className = "form-status success";
       answerForm.reset();
-    } else {
-      throw new Error(data.description || "Ошибка отправки");
-    }
+    } else throw new Error(data.description);
   } catch (err) {
     console.error(err);
-    formStatus.textContent = "Не удалось отправить. Попробуй позже 😔";
+    formStatus.textContent = "Не удалось отправить 😔";
     formStatus.className = "form-status error";
   } finally {
     submitBtn.disabled = false;
     submitBtn.textContent = "❤️ Продолжить нашу историю";
   }
 });
-
-// ==========================================================
-// 📱 QR-КОД
-// ==========================================================

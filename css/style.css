@@ -36,7 +36,175 @@ body {
     color 0.5s;
 }
 
-/* ===== Canvas сердечки ===== */
+body.locked {
+  overflow: hidden;
+}
+
+/* ============================================================ */
+/* 💝 ОТКРЫТКА ПРИ ВХОДЕ                                        */
+/* ============================================================ */
+.greeting-card {
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #c56cf0 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  transition:
+    opacity 0.8s ease,
+    visibility 0.8s;
+  padding: 20px;
+}
+
+.greeting-card.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.greeting-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+}
+
+.greeting-hint {
+  color: #fff;
+  font-family: "Great Vibes", cursive;
+  font-size: clamp(1.4rem, 4vw, 2.2rem);
+  text-align: center;
+  animation: fadeInUp 1.5s ease 0.5s both;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Конверт */
+.envelope {
+  position: relative;
+  width: 280px;
+  height: 190px;
+  cursor: pointer;
+  animation: envelopeFloat 3s ease-in-out infinite;
+  filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.3));
+}
+
+@keyframes envelopeFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+}
+
+.envelope-back {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #ff6b9d, #e91e63);
+  border-radius: 10px;
+}
+
+.envelope-front {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #ff8fb1, #ff5c8a);
+  border-radius: 10px;
+  clip-path: polygon(0 0, 50% 55%, 100% 0, 100% 100%, 0 100%);
+  z-index: 3;
+}
+
+.envelope-flap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 60%;
+  background: linear-gradient(135deg, #ffb3c6, #ff5c8a);
+  border-radius: 10px 10px 0 0;
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  transform-origin: top;
+  transition: transform 0.8s ease;
+  z-index: 4;
+}
+
+.envelope.open .envelope-flap {
+  transform: rotateX(180deg);
+}
+
+.envelope-letter {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 85%;
+  background: #fff;
+  padding: 20px 15px;
+  border-radius: 8px;
+  z-index: 2;
+  transition:
+    transform 0.8s ease 0.3s,
+    top 0.8s ease 0.3s;
+  text-align: center;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+}
+
+.envelope.open .envelope-letter {
+  top: -120px;
+  transform: translateX(-50%) scale(1.05);
+}
+
+.letter-to {
+  font-family: "Great Vibes", cursive;
+  font-size: 1.6rem;
+  color: var(--pink-dark);
+  margin-bottom: 5px;
+}
+
+.letter-hint {
+  font-size: 0.85rem;
+  color: #999;
+}
+
+.envelope-seal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #ff1744, #c2185b);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  z-index: 5;
+  box-shadow:
+    0 5px 15px rgba(0, 0, 0, 0.3),
+    inset 0 -3px 8px rgba(0, 0, 0, 0.2);
+  animation: sealPulse 1.8s infinite;
+  transition: opacity 0.4s;
+}
+
+.envelope.open .envelope-seal {
+  opacity: 0;
+}
+
+@keyframes sealPulse {
+  0%,
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.1);
+  }
+}
+
+/* ============================================================ */
+/* ОБЩЕЕ                                                        */
+/* ============================================================ */
 #heartsCanvas {
   position: fixed;
   top: 0;
@@ -47,7 +215,51 @@ body {
   z-index: 1;
 }
 
-/* ===== Hero ===== */
+.top-controls {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  gap: 10px;
+  z-index: 1000;
+}
+
+.control-btn {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: none;
+  background: var(--card-bg);
+  color: var(--text);
+  font-size: 1.3rem;
+  cursor: pointer;
+  box-shadow: 0 4px 15px var(--shadow);
+  transition: transform 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.control-btn:hover {
+  transform: scale(1.1);
+}
+.control-btn.playing {
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(233, 30, 99, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 20px rgba(233, 30, 99, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(233, 30, 99, 0);
+  }
+}
+
+/* Hero */
 .hero {
   height: 100vh;
   min-height: 600px;
@@ -72,10 +284,8 @@ body {
   color: #fff;
   font-size: clamp(1rem, 2.5vw, 1.4rem);
   margin-top: 20px;
-  opacity: 0.95;
 }
 
-/* Счётчик вместе */
 .counter {
   display: flex;
   justify-content: center;
@@ -121,9 +331,51 @@ body {
   bottom: 30px;
   left: 50%;
   transform: translateX(-50%);
-  font-size: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
   color: #fff;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.scroll-text {
+  font-family: "Great Vibes", cursive;
+  font-size: clamp(1.1rem, 3vw, 1.5rem);
+  color: #fff;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
+  letter-spacing: 0.5px;
+  animation: scrollTextFade 2.5s ease-in-out infinite;
+  white-space: nowrap;
+}
+
+.scroll-arrow {
+  font-size: clamp(1.6rem, 4vw, 2rem);
   animation: bounce 2s infinite;
+  line-height: 1;
+}
+
+@keyframes scrollTextFade {
+  0%,
+  100% {
+    opacity: 0.7;
+    transform: translateY(0);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(-3px);
+  }
+}
+
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(12px);
+  }
 }
 
 @keyframes bounce {
@@ -136,57 +388,7 @@ body {
   }
 }
 
-/* ===== Top Controls (музыка + тема) ===== */
-.top-controls {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  display: flex;
-  gap: 10px;
-  z-index: 1000;
-}
-
-.control-btn {
-  width: 52px;
-  height: 52px;
-  border-radius: 50%;
-  border: none;
-  background: var(--card-bg);
-  color: var(--text);
-  font-size: 1.3rem;
-  cursor: pointer;
-  box-shadow: 0 4px 15px var(--shadow);
-  transition:
-    transform 0.3s,
-    background 0.3s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  line-height: 1;
-}
-
-.control-btn:hover {
-  transform: scale(1.1);
-  box-shadow: 0 6px 20px var(--shadow-pink);
-}
-
-.control-btn.playing {
-  animation: pulse 1.5s infinite;
-}
-
-@keyframes pulse {
-  0% {
-    box-shadow: 0 0 0 0 rgba(233, 30, 99, 0.7);
-  }
-  70% {
-    box-shadow: 0 0 0 20px rgba(233, 30, 99, 0);
-  }
-  100% {
-    box-shadow: 0 0 0 0 rgba(233, 30, 99, 0);
-  }
-}
-
-/* ===== Timeline ===== */
+/* Timeline */
 .timeline {
   position: relative;
   max-width: 900px;
@@ -238,7 +440,6 @@ body {
 .event-number {
   display: inline-block;
   font-size: 3rem;
-  font-weight: 600;
   font-family: "Great Vibes", cursive;
   color: var(--pink-dark);
   margin-bottom: 5px;
@@ -247,7 +448,6 @@ body {
 .event h2 {
   font-size: clamp(1.4rem, 4vw, 2rem);
   margin-bottom: 10px;
-  color: var(--text);
 }
 
 .event-date {
@@ -295,7 +495,7 @@ body {
   background: var(--card-bg);
 }
 
-/* ===== Cards ===== */
+/* Cards */
 .cards-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -320,19 +520,13 @@ body {
   box-shadow: 0 12px 30px var(--shadow-pink);
 }
 
-.card:active {
-  transform: scale(0.97);
-}
-
 .card-emoji {
   font-size: 2.5rem;
   margin-bottom: 10px;
 }
-
 .card h3 {
   font-size: 0.95rem;
   font-weight: 500;
-  color: var(--text);
 }
 
 .card-hint {
@@ -342,7 +536,7 @@ body {
   margin-top: 12px;
 }
 
-/* ===== Slider ===== */
+/* Slider */
 .slider {
   position: relative;
   border-radius: 16px;
@@ -354,7 +548,6 @@ body {
 .slider-track {
   display: flex;
   transition: transform 0.5s ease;
-  touch-action: pan-y;
 }
 
 .slider-track img {
@@ -362,8 +555,6 @@ body {
   height: auto;
   max-height: 550px;
   object-fit: cover;
-  user-select: none;
-  -webkit-user-drag: none;
 }
 
 .slider-btn {
@@ -378,21 +569,10 @@ body {
   color: #fff;
   font-size: 1.6rem;
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition:
-    background 0.3s,
-    transform 0.3s;
   z-index: 5;
-  line-height: 1;
   padding-bottom: 4px;
 }
 
-.slider-btn:hover {
-  background: var(--pink-dark);
-  transform: translateY(-50%) scale(1.1);
-}
 .slider-btn.prev {
   left: 12px;
 }
@@ -407,7 +587,6 @@ body {
   transform: translateX(-50%);
   display: flex;
   gap: 8px;
-  z-index: 5;
 }
 
 .slider-dots span {
@@ -416,9 +595,6 @@ body {
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.6);
   cursor: pointer;
-  transition:
-    background 0.3s,
-    transform 0.3s;
 }
 
 .slider-dots span.active {
@@ -426,7 +602,372 @@ body {
   transform: scale(1.3);
 }
 
-/* ===== Anniversary ===== */
+/* ============================================================ */
+/* 💌 КОНВЕРТ С ПИСЬМОМ                                         */
+/* ============================================================ */
+/* ============================================================ */
+/* 💌 КОНВЕРТ С ПИСЬМОМ                                         */
+/* ============================================================ */
+.letter-envelope {
+  position: relative;
+  width: 100%;
+  max-width: 480px;
+  margin: 40px auto 20px;
+  cursor: pointer;
+  perspective: 1200px;
+}
+
+/* Задняя часть конверта (уезжает вниз, когда открыто) */
+.letter-envelope-back {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 480 / 300;
+  background: linear-gradient(135deg, #ff6b9d, #e91e63);
+  border-radius: 12px;
+  box-shadow: 0 15px 40px rgba(233, 30, 99, 0.35);
+  z-index: 1;
+  transition: transform 0.8s ease;
+}
+
+.letter-envelope.open .letter-envelope-back {
+  transform: translateY(20px);
+}
+
+/* Письмо — лежит поверх, выезжает вверх */
+.letter-paper {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%) translateY(0);
+  width: 92%;
+  background: #fffaf0;
+  border-radius: 10px;
+  z-index: 2;
+  max-height: 70%;
+  overflow: hidden;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+  transition:
+    max-height 0.8s ease 0.3s,
+    transform 0.8s ease 0.3s,
+    box-shadow 0.6s ease 0.3s;
+}
+
+.letter-envelope.open .letter-paper {
+  max-height: 1400px;
+  transform: translateX(-50%) translateY(-30%);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.3);
+  z-index: 10;
+}
+
+.letter-content {
+  padding: 30px 26px;
+  font-family: "Caveat", cursive;
+  font-size: 1.15rem;
+  line-height: 1.7;
+  color: #4a2c35;
+  text-align: left;
+}
+
+.letter-greeting {
+  font-size: 1.6rem;
+  color: #e91e63;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.letter-content p {
+  margin-bottom: 14px;
+}
+
+.letter-signature {
+  text-align: right;
+  font-size: 1.3rem;
+  color: #e91e63;
+  margin-top: 20px;
+}
+
+/* Передняя часть конверта (карман) */
+.letter-envelope-front {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 55%;
+  background: linear-gradient(135deg, #ff8fb1, #ff5c8a);
+  border-radius: 0 0 12px 12px;
+  clip-path: polygon(0 0, 50% 40%, 100% 0, 100% 100%, 0 100%);
+  z-index: 3;
+  pointer-events: none;
+  transition: transform 0.8s ease;
+}
+
+.letter-envelope.open .letter-envelope-front {
+  transform: translateY(20px);
+}
+
+/* Клапан конверта */
+.letter-envelope-flap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 50%;
+  background: linear-gradient(135deg, #ffb3c6, #ff5c8a);
+  border-radius: 12px 12px 0 0;
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  transform-origin: top;
+  transition: transform 0.8s ease;
+  z-index: 4;
+  pointer-events: none;
+}
+
+.letter-envelope.open .letter-envelope-flap {
+  transform: rotateX(180deg);
+  z-index: 0;
+}
+
+/* Сургучная печать */
+.letter-envelope-seal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #ff1744, #c2185b);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  z-index: 5;
+  transition:
+    opacity 0.4s ease,
+    transform 0.4s ease;
+  box-shadow:
+    0 5px 15px rgba(0, 0, 0, 0.3),
+    inset 0 -3px 8px rgba(0, 0, 0, 0.2);
+  pointer-events: none;
+}
+
+.letter-envelope.open .letter-envelope-seal {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0);
+}
+
+.letter-hint {
+  text-align: center;
+  color: var(--text-soft);
+  font-size: 0.9rem;
+  margin-top: 20px;
+  transition: opacity 0.4s;
+}
+
+.letter-envelope.open ~ .letter-hint {
+  opacity: 0;
+}
+/* ============================================================ */
+/* 🎯 ДАРТС                                                     */
+/* ============================================================ */
+.darts-game {
+  background: var(--card-bg);
+  border-radius: 20px;
+  padding: 25px 20px;
+  box-shadow: 0 10px 30px var(--shadow);
+  text-align: center;
+}
+
+.darts-board {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  max-width: 400px;
+  margin: 0 auto 20px;
+}
+
+.dart-target {
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle, #fff0f5, #ffe0ec);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(2rem, 8vw, 3rem);
+  cursor: pointer;
+  transition:
+    transform 0.2s,
+    background 0.3s;
+  border: 3px solid var(--pink);
+  user-select: none;
+}
+
+.dart-target:hover {
+  transform: scale(1.08);
+  background: radial-gradient(circle, #ffd1e0, #ffb3c6);
+}
+
+.dart-target.hit {
+  animation: hitPop 0.5s ease;
+  pointer-events: none;
+  opacity: 0.4;
+}
+
+.dart-target.miss {
+  animation: missShake 0.4s ease;
+}
+
+@keyframes hitPop {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.4);
+    background: #ffcc00;
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes missShake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-6px);
+  }
+  75% {
+    transform: translateX(6px);
+  }
+}
+
+.darts-message {
+  min-height: 70px;
+  padding: 15px;
+  background: linear-gradient(135deg, #ffe0ec, #f3e0ff);
+  border-radius: 14px;
+  font-family: "Great Vibes", cursive;
+  font-size: clamp(1.1rem, 3.5vw, 1.5rem);
+  color: var(--pink-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+  animation: fadeInModal 0.5s ease;
+}
+
+body.dark .darts-message {
+  background: linear-gradient(135deg, #3a1d2b, #2a1d3a);
+}
+
+.darts-score {
+  color: var(--text-soft);
+  font-size: 0.95rem;
+}
+
+/* ============================================================ */
+/* 🃏 КАРТЫ С ПРЕДСКАЗАНИЯМИ                                    */
+/* ============================================================ */
+.cards-deck {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.deck {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+  height: 120px;
+  position: relative;
+}
+
+.deck-card {
+  width: 80px;
+  height: 115px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--pink), var(--purple));
+  border: 3px solid #fff;
+  box-shadow: 0 5px 20px rgba(233, 30, 99, 0.3);
+  position: absolute;
+}
+
+.deck-card:nth-child(1) {
+  transform: rotate(-8deg) translateX(-20px);
+}
+.deck-card:nth-child(2) {
+  transform: rotate(0deg);
+  z-index: 2;
+}
+.deck-card:nth-child(3) {
+  transform: rotate(8deg) translateX(20px);
+}
+
+.deck-card::after {
+  content: "❤️";
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+}
+
+.fortune-card {
+  max-width: 380px;
+  margin: 0 auto;
+  perspective: 1000px;
+  opacity: 0;
+  transform: translateY(30px) scale(0.8);
+  transition:
+    opacity 0.6s,
+    transform 0.6s;
+  pointer-events: none;
+}
+
+.fortune-card.show {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.fortune-front {
+  background: var(--card-bg);
+  border-radius: 20px;
+  padding: 35px 25px;
+  box-shadow: 0 15px 40px var(--shadow-pink);
+  border: 2px solid var(--pink);
+  text-align: center;
+  min-height: 220px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+}
+
+.fortune-icon {
+  font-size: 3rem;
+  animation: musicFloat 3s ease-in-out infinite;
+}
+
+@keyframes musicFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.fortune-text {
+  font-family: "Great Vibes", cursive;
+  font-size: clamp(1.15rem, 3.5vw, 1.5rem);
+  color: var(--pink-dark);
+  line-height: 1.6;
+}
+
+/* Anniversary */
 .anniversary-block {
   text-align: center;
   background: linear-gradient(135deg, #ffe0ec, #f3e0ff);
@@ -452,7 +993,7 @@ body.dark .anniversary-block {
   border: 1px solid rgba(233, 30, 99, 0.2);
 }
 
-/* ===== Final Event ===== */
+/* Final */
 .final-event .event-content {
   text-align: center;
   background: linear-gradient(135deg, #ffe0ec, #f3e0ff);
@@ -464,12 +1005,12 @@ body.dark .final-event .event-content {
   background: linear-gradient(135deg, #3a1d2b, #2a1d3a);
 }
 
-/* ===== Surprise ===== */
+/* Surprise */
 .surprise-section {
   text-align: center;
   padding: 40px 20px;
-  z-index: 2;
   position: relative;
+  z-index: 2;
 }
 
 .btn-surprise {
@@ -482,15 +1023,12 @@ body.dark .final-event .event-content {
   font-weight: 600;
   cursor: pointer;
   box-shadow: 0 10px 30px rgba(233, 30, 99, 0.35);
-  transition:
-    transform 0.3s,
-    box-shadow 0.3s;
+  transition: transform 0.3s;
   font-family: inherit;
 }
 
 .btn-surprise:hover {
   transform: translateY(-4px) scale(1.03);
-  box-shadow: 0 15px 40px rgba(233, 30, 99, 0.5);
 }
 
 .surprise-content {
@@ -501,7 +1039,6 @@ body.dark .final-event .event-content {
     opacity 0.6s,
     margin 0.4s;
   opacity: 0;
-  margin-top: 0;
 }
 
 .surprise-content.open {
@@ -523,7 +1060,7 @@ body.dark .final-event .event-content {
   margin: 0 auto;
 }
 
-/* ===== Answer Form ===== */
+/* Answer Form */
 .answer-section {
   max-width: 600px;
   margin: 40px auto 60px;
@@ -557,7 +1094,6 @@ body.dark .final-event .event-content {
   font-family: inherit;
   font-size: 1rem;
   resize: vertical;
-  transition: border 0.3s;
   outline: none;
   background: var(--bg);
   color: var(--text);
@@ -591,7 +1127,6 @@ body.dark .final-event .event-content {
 .btn-primary:disabled {
   opacity: 0.6;
   cursor: not-allowed;
-  transform: none;
 }
 
 .form-status {
@@ -607,36 +1142,6 @@ body.dark .final-event .event-content {
   color: #c62828;
 }
 
-/* ===== QR Section ===== */
-.qr-section {
-  text-align: center;
-  padding: 40px 20px 60px;
-  position: relative;
-  z-index: 2;
-}
-
-.qr-section h2 {
-  font-family: "Great Vibes", cursive;
-  font-size: clamp(1.6rem, 4vw, 2.2rem);
-  color: var(--pink-dark);
-  margin-bottom: 20px;
-}
-
-#qrcode {
-  display: inline-block;
-  padding: 15px;
-  background: #fff;
-  border-radius: 16px;
-  box-shadow: 0 10px 30px var(--shadow);
-}
-
-.qr-hint {
-  margin-top: 15px;
-  color: var(--text-soft);
-  font-size: 0.9rem;
-}
-
-/* ===== Footer ===== */
 footer {
   text-align: center;
   padding: 30px;
@@ -646,7 +1151,7 @@ footer {
   z-index: 2;
 }
 
-/* ===== Reveal Animation ===== */
+/* Reveal */
 .reveal {
   opacity: 0;
   transform: translateY(60px);
@@ -682,7 +1187,7 @@ footer {
   }
 }
 
-/* ===== Modal ===== */
+/* Modal */
 .modal {
   position: fixed;
   inset: 0;
@@ -715,10 +1220,9 @@ footer {
   position: relative;
   transform: scale(0.85);
   transition: transform 0.3s;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
-  text-align: center;
   max-height: 90vh;
   overflow-y: auto;
+  text-align: center;
 }
 
 .modal.open .modal-content {
@@ -731,9 +1235,6 @@ footer {
   object-fit: cover;
   border-radius: 14px;
   margin-bottom: 18px;
-  display: block;
-  background: var(--bg);
-  animation: fadeInModal 0.5s ease;
 }
 
 .modal-image:not([src]),
@@ -741,22 +1242,10 @@ footer {
   display: none;
 }
 
-@keyframes fadeInModal {
-  from {
-    opacity: 0;
-    transform: scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
 .modal-content p {
   font-family: "Great Vibes", cursive;
   font-size: clamp(1.15rem, 3.5vw, 1.6rem);
   color: var(--pink-dark);
-  line-height: 1.6;
   padding: 0 10px 10px;
 }
 
@@ -772,23 +1261,29 @@ footer {
   color: #fff;
   font-size: 1.5rem;
   cursor: pointer;
-  line-height: 1;
   z-index: 10;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition:
-    transform 0.3s,
-    background 0.3s;
   padding-bottom: 3px;
 }
 
-.modal-close:hover {
-  background: var(--pink-dark);
-  transform: rotate(90deg) scale(1.1);
+@keyframes fadeInModal {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+/* Дартс — кнопка сброса */
+.darts-reset {
+  margin-top: 15px;
+  padding: 12px 30px;
+  font-size: 1rem;
+  animation: fadeInModal 0.5s ease;
 }
 
-/* ===== Адаптив ===== */
+/* Адаптив */
 @media (max-width: 600px) {
   .timeline::before {
     left: 18px;
@@ -846,24 +1341,68 @@ footer {
   }
   .btn-surprise {
     padding: 15px 30px;
-    font-size: 1rem;
   }
   .surprise-text {
     padding: 25px 20px;
   }
   .modal-content {
     padding: 15px;
-    border-radius: 16px;
   }
   .modal-image {
     max-height: 45vh;
-    margin-bottom: 14px;
   }
   .modal-close {
     width: 34px;
     height: 34px;
-    font-size: 1.3rem;
     top: 8px;
     right: 8px;
+  }
+
+  .envelope {
+    width: 240px;
+    height: 160px;
+  }
+  .envelope-seal {
+    width: 50px;
+    height: 50px;
+    font-size: 1.5rem;
+  }
+  .letter-to {
+    font-size: 1.3rem;
+  }
+
+  .letter-envelope {
+    margin: 30px auto 20px;
+  }
+  .letter-content {
+    padding: 22px 18px;
+    font-size: 1.05rem;
+  }
+  .letter-greeting {
+    font-size: 1.4rem;
+  }
+  .letter-envelope.open .letter-paper {
+    transform: translateX(-50%) translateY(-25%);
+  }
+  .letter-envelope.open .letter-paper {
+    top: -150px;
+  }
+  .letter-content {
+    padding: 22px 18px;
+    font-size: 1.05rem;
+  }
+  .letter-greeting {
+    font-size: 1.4rem;
+  }
+
+  .darts-board {
+    gap: 10px;
+  }
+  .deck-card {
+    width: 65px;
+    height: 95px;
+  }
+  .fortune-front {
+    padding: 28px 18px;
   }
 }

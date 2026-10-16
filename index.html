@@ -8,15 +8,34 @@
     <link rel="stylesheet" href="css/style.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link
-      href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;600&family=Caveat:wght@400;700&display=swap"
       rel="stylesheet"
     />
   </head>
   <body>
+    <!-- ============================================================ -->
+    <!-- 💝 ОТКРЫТКА ПРИ ВХОДЕ -->
+    <!-- ============================================================ -->
+    <div id="greetingCard" class="greeting-card">
+      <div class="greeting-inner">
+        <div class="envelope" id="envelope">
+          <div class="envelope-back"></div>
+          <div class="envelope-flap"></div>
+          <div class="envelope-letter">
+            <p class="letter-to">Для тебя ❤️</p>
+            <p class="letter-hint">Нажми, чтобы открыть</p>
+          </div>
+          <div class="envelope-front"></div>
+          <div class="envelope-seal">💌</div>
+        </div>
+        <p class="greeting-hint">Коснись конверта, чтобы начать нашу историю</p>
+      </div>
+    </div>
+
     <!-- Канвас с падающими сердечками -->
     <canvas id="heartsCanvas"></canvas>
 
-    <!-- Кнопки управления (музыка + тема) -->
+    <!-- Кнопки управления -->
     <div class="top-controls">
       <button id="musicBtn" class="control-btn" title="Включить музыку">
         🎵
@@ -30,34 +49,31 @@
         <h1 class="fade-in">❤️ Наша история</h1>
         <p class="fade-in delay-1">Каждый момент с тобой — бесценен</p>
 
-        <!-- Счётчик дней вместе -->
         <div class="counter fade-in delay-2">
           <div class="counter-item">
-            <span id="daysCount">0</span>
-            <small>дней</small>
+            <span id="daysCount">0</span><small>дней</small>
           </div>
           <div class="counter-item">
-            <span id="hoursCount">0</span>
-            <small>часов</small>
+            <span id="hoursCount">0</span><small>часов</small>
           </div>
           <div class="counter-item">
-            <span id="minutesCount">0</span>
-            <small>минут</small>
+            <span id="minutesCount">0</span><small>минут</small>
           </div>
           <div class="counter-item">
-            <span id="secondsCount">0</span>
-            <small>секунд</small>
+            <span id="secondsCount">0</span><small>секунд</small>
           </div>
         </div>
         <p class="counter-label fade-in delay-2">
           вместе с <span id="togetherDateLabel">14.02.2025</span>
         </p>
 
-        <div class="scroll-down">↓</div>
+        <div class="scroll-down">
+          <span class="scroll-text">Пролистай вниз</span>
+          <span class="scroll-arrow">↓</span>
+        </div>
       </div>
     </header>
 
-    <!-- Таймлайн -->
     <main class="timeline">
       <!-- Событие 1 -->
       <section class="event reveal">
@@ -71,7 +87,7 @@
             это знакомство.»
           </p>
           <div class="event-photo">
-            <img src="images/photo1.jpg" alt="Фото с того дня" loading="lazy" />
+            <img src="images/photo1.jpg" alt="Фото" loading="lazy" />
             <span class="photo-caption">📸 Фото с того дня</span>
           </div>
         </div>
@@ -85,11 +101,7 @@
           <h2>Первые разговоры 💬</h2>
           <p class="event-text">«Сначала мы просто переписывались часами…»</p>
           <div class="event-photo">
-            <img
-              src="images/photo2.jpg"
-              alt="Скриншот переписки"
-              loading="lazy"
-            />
+            <img src="images/photo2.jpg" alt="Фото" loading="lazy" />
             <span class="photo-caption">📸 Скриншот переписки</span>
           </div>
         </div>
@@ -121,7 +133,7 @@
           <div class="cards-grid">
             <div
               class="card"
-              data-message="Помнишь ту прогулку? Я до сих пор улыбаюсь, когда вспоминаю 🌆"
+              data-message="Помнишь ту прогулку? Я до сих пор улыбаюсь 🌆"
               data-photo="images/moment1.jpg"
             >
               <div class="card-emoji">🌆</div>
@@ -129,7 +141,7 @@
             </div>
             <div
               class="card"
-              data-message="Первая поездка! Тогда я понял, что хочу путешествовать только с тобой 🚗"
+              data-message="Первая поездка! Хочу путешествовать только с тобой 🚗"
               data-photo="images/moment2.jpg"
             >
               <div class="card-emoji">🚗</div>
@@ -145,7 +157,7 @@
             </div>
             <div
               class="card"
-              data-message="Наши любимые места — там, где мы были вместе ❤️"
+              data-message="Наши любимые места — там, где мы вместе ❤️"
               data-photo="images/moment4.jpg"
             >
               <div class="card-emoji">❤️</div>
@@ -156,7 +168,7 @@
         </div>
       </section>
 
-      <!-- Слайдер фото -->
+      <!-- Слайдер -->
       <section class="event reveal">
         <div class="event-dot"></div>
         <div class="event-content">
@@ -165,14 +177,136 @@
           <div class="slider">
             <button class="slider-btn prev" aria-label="Назад">‹</button>
             <div class="slider-track" id="sliderTrack">
-              <img src="images/photo1.jpg" alt="Фото 1" />
-              <img src="images/photo2.jpg" alt="Фото 2" />
-              <img src="images/photo3.jpg" alt="Фото 3" />
-              <img src="images/photo4.jpg" alt="Фото 4" />
-              <img src="images/photo5.jpg" alt="Фото 5" />
+              <img src="images/photo1.jpg" alt="1" />
+              <img src="images/photo2.jpg" alt="2" />
+              <img src="images/photo3.jpg" alt="3" />
+              <img src="images/photo4.jpg" alt="4" />
+              <img src="images/photo5.jpg" alt="5" />
             </div>
             <button class="slider-btn next" aria-label="Вперёд">›</button>
             <div class="slider-dots" id="sliderDots"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================ -->
+      <!-- 💌 КОНВЕРТ С ПИСЬМОМ -->
+      <!-- ============================================================ -->
+      <section class="event reveal">
+        <div class="event-dot"></div>
+        <div class="event-content">
+          <span class="event-number">6</span>
+          <h2>Письмо для тебя 💌</h2>
+          <p class="event-text">«Я написал это от всего сердца…»</p>
+          <div class="letter-envelope" id="letterEnvelope">
+            <div class="letter-envelope-back"></div>
+            <div class="letter-envelope-flap"></div>
+            <div class="letter-paper">
+              <div class="letter-content">
+                <p class="letter-greeting">Моя любимая,</p>
+                <p>
+                  Знаешь, я часто вспоминаю тот день, когда мы впервые
+                  встретились. Я тогда ещё не понимал, что в мою жизнь входит
+                  человек, который изменит в ней всё. Мы шли по улице, говорили
+                  о пустяках, смеялись — а я смотрел на тебя и думал: «Почему
+                  мне так спокойно рядом с ней?»
+                </p>
+                <p>
+                  Потом были наши бесконечные переписки до утра, когда я ждал
+                  каждого твоего сообщения, как ребёнок ждёт утра. Я помню
+                  каждое твоё «доброе утро», каждое «как ты?», каждое «я
+                  скучаю». С тобой я впервые понял, что счастье — это не что-то
+                  большое и далёкое. Оно в мелочах: в твоём смехе, в том, как ты
+                  жмуришься на солнце, как держишь мою руку, как говоришь моё
+                  имя.
+                </p>
+                <p>
+                  Ты — тот человек, с которым я хочу просыпаться и засыпать. С
+                  которым хочу ссориться и мириться, молчать и говорить обо всём
+                  на свете. С которым не страшно ни будущее, ни расстояние, ни
+                  время. Потому что рядом с тобой я — настоящий.
+                </p>
+                <p>
+                  Спасибо, что ты есть. Спасибо за каждый день, за каждую
+                  улыбку, за каждое «я рядом». Я не знаю, что будет завтра, но
+                  точно знаю одно: я хочу пройти весь этот путь с тобой. Рядом.
+                  За руку. До самого конца.
+                </p>
+                <p class="letter-signature">Твой навсегда,<br />❤️</p>
+              </div>
+            </div>
+            <div class="letter-envelope-front"></div>
+            <div class="letter-envelope-seal">💌</div>
+          </div>
+          <p class="letter-hint">Нажми на конверт, чтобы прочитать письмо 👆</p>
+        </div>
+      </section>
+
+      <!-- ============================================================ -->
+      <!-- 🎯 ДАРТС С СЕРДЕЧКАМИ -->
+      <!-- ============================================================ -->
+      <!-- ============================================================ -->
+      <!-- 🎯 ДАРТС С СЕРДЕЧКАМИ -->
+      <!-- ============================================================ -->
+      <section class="event reveal">
+        <div class="event-dot"></div>
+        <div class="event-content">
+          <span class="event-number">7</span>
+          <h2>Дартс любви 🎯</h2>
+          <p class="event-text">«Попади в сердечко и получи комплимент»</p>
+          <div class="darts-game">
+            <div class="darts-board" id="dartsBoard">
+              <div class="dart-target" data-index="0">💖</div>
+              <div class="dart-target" data-index="1">💘</div>
+              <div class="dart-target" data-index="2">💝</div>
+              <div class="dart-target" data-index="3">💗</div>
+              <div class="dart-target" data-index="4">💓</div>
+              <div class="dart-target" data-index="5">❤️</div>
+            </div>
+            <div class="darts-message" id="dartsMessage">
+              Нажми на любое сердечко 🎯
+            </div>
+            <div class="darts-score">
+              Попаданий: <span id="dartsScore">0</span> из
+              <span id="dartsTotal">0</span>
+            </div>
+            <button
+              id="dartsResetBtn"
+              class="btn-primary darts-reset"
+              style="display: none"
+            >
+              🔄 Играть снова
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================ -->
+      <!-- 🃏 КАРТЫ С ПРЕДСКАЗАНИЯМИ -->
+      <!-- ============================================================ -->
+      <section class="event reveal">
+        <div class="event-dot"></div>
+        <div class="event-content">
+          <span class="event-number">8</span>
+          <h2>Карты нашей судьбы 🃏</h2>
+          <p class="event-text">«Вытяни карту — она расскажет о нас»</p>
+          <div class="cards-deck">
+            <div class="deck" id="deck">
+              <div class="deck-card deck-back"></div>
+              <div class="deck-card deck-back"></div>
+              <div class="deck-card deck-back"></div>
+            </div>
+            <button id="drawCardBtn" class="btn-primary">
+              🃏 Вытянуть карту
+            </button>
+          </div>
+          <div class="fortune-card" id="fortuneCard">
+            <div class="fortune-inner">
+              <div class="fortune-front">
+                <div class="fortune-icon">🔮</div>
+                <p class="fortune-text" id="fortuneText"></p>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -182,7 +316,7 @@
         <div class="event-dot"></div>
         <div class="event-content anniversary-block">
           <h2>🎂 До нашей годовщины осталось</h2>
-          <div class="anniversary-counter" id="anniversaryCounter">
+          <div class="anniversary-counter">
             <div class="counter-item">
               <span id="annDays">0</span><small>дней</small>
             </div>
@@ -209,7 +343,7 @@
       </section>
     </main>
 
-    <!-- Сюрприз-кнопка -->
+    <!-- Сюрприз -->
     <section class="surprise-section reveal">
       <button id="surpriseBtn" class="btn-surprise">🎁 Открыть сюрприз</button>
       <div id="surpriseContent" class="surprise-content">
@@ -238,22 +372,17 @@
       <p id="formStatus" class="form-status"></p>
     </section>
 
-    <!-- QR-код -->
+    <footer><p>Сделано с ❤️ для тебя</p></footer>
 
-    <footer>
-      <p>Сделано с ❤️ для тебя</p>
-    </footer>
-
-    <!-- Модальное окно для карточек -->
+    <!-- Модальное окно -->
     <div id="modal" class="modal">
       <div class="modal-content">
         <button class="modal-close" id="modalClose">×</button>
-        <img id="modalImage" class="modal-image" src="" alt="Фото момента" />
+        <img id="modalImage" class="modal-image" src="" alt="" />
         <p id="modalText"></p>
       </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
     <script src="js/script.js"></script>
   </body>
 </html>
