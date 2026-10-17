@@ -1285,6 +1285,7 @@ footer {
 
 /* Адаптив */
 @media (max-width: 600px) {
+  /* === Общие стили === */
   .timeline::before {
     left: 18px;
   }
@@ -1357,44 +1358,6 @@ footer {
     top: 8px;
     right: 8px;
   }
-
-  .envelope {
-    width: 240px;
-    height: 160px;
-  }
-  .envelope-seal {
-    width: 50px;
-    height: 50px;
-    font-size: 1.5rem;
-  }
-  .letter-to {
-    font-size: 1.3rem;
-  }
-
-  .letter-envelope {
-    margin: 30px auto 20px;
-  }
-  .letter-content {
-    padding: 22px 18px;
-    font-size: 1.05rem;
-  }
-  .letter-greeting {
-    font-size: 1.4rem;
-  }
-  .letter-envelope.open .letter-paper {
-    transform: translateX(-50%) translateY(-25%);
-  }
-  .letter-envelope.open .letter-paper {
-    top: -150px;
-  }
-  .letter-content {
-    padding: 22px 18px;
-    font-size: 1.05rem;
-  }
-  .letter-greeting {
-    font-size: 1.4rem;
-  }
-
   .darts-board {
     gap: 10px;
   }
@@ -1404,5 +1367,105 @@ footer {
   }
   .fortune-front {
     padding: 28px 18px;
+  }
+
+  /* === 1. ОТКРЫТКА ПРИ ВХОДЕ (Мобилка) === */
+  .envelope {
+    width: 260px;
+    height: 170px;
+  }
+  .envelope-flap {
+    height: 55%;
+    clip-path: polygon(0 0, 100% 0, 50% 100%);
+  }
+  .envelope-front {
+    clip-path: polygon(0 0, 50% 45%, 100% 0, 100% 100%, 0 100%);
+  }
+  .envelope-letter {
+    padding: 15px 10px;
+  }
+  .letter-to {
+    font-size: 1.3rem;
+  }
+  .envelope-seal {
+    width: 45px;
+    height: 45px;
+    font-size: 1.3rem;
+  }
+
+  /* === 2. КОНВЕРТ С ПИСЬМОМ (Мобилка) === */
+  /* === 2. КОНВЕРТ С ПИСЬМОМ (Мобилка) === */
+  .letter-envelope {
+    position: relative;
+    width: 100%;
+    height: auto !important;
+    margin: 20px auto 30px;
+    perspective: none;
+    cursor: pointer;
+  }
+
+  /* Прячем 3D-части конверта */
+  .letter-envelope-back,
+  .letter-envelope-front,
+  .letter-envelope-flap,
+  .letter-envelope-seal {
+    display: none !important;
+  }
+
+  /* Письмо как карточка */
+  .letter-paper {
+    position: relative !important;
+    top: 0 !important;
+    left: 0 !important;
+    transform: none !important;
+    width: 100%;
+    max-height: 140px; /* Показываем только шапку и пару строк в закрытом виде */
+    overflow: hidden;
+    border: 2px dashed #ffb3c6;
+    border-radius: 16px;
+    background: #fffaf0;
+    box-shadow: 0 10px 30px rgba(233, 30, 99, 0.15);
+    transition:
+      max-height 0.8s ease,
+      box-shadow 0.4s ease;
+  }
+
+  /* Градиент снизу, чтобы было понятно, что текст обрезан и его можно открыть */
+  .letter-paper::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 40px;
+    background: linear-gradient(to bottom, transparent, #fffaf0);
+    pointer-events: none;
+  }
+
+  /* Когда открыто — растягиваем полностью */
+  .letter-envelope.open .letter-paper {
+    max-height: 3000px;
+    box-shadow: 0 10px 30px rgba(233, 30, 99, 0.3);
+    border-style: solid;
+  }
+
+  .letter-envelope.open .letter-paper::after {
+    display: none;
+  }
+
+  .letter-content {
+    padding: 20px 15px;
+    font-size: 1.1rem;
+    line-height: 1.6;
+  }
+
+  .letter-greeting {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+  }
+
+  .letter-hint {
+    margin-top: 15px;
+    font-size: 0.85rem;
   }
 }
