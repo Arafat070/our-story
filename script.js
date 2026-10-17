@@ -2,7 +2,7 @@
 // ⚙️ НАСТРОЙКИ — ЗАМЕНИ НА СВОИ ЗНАЧЕНИЯ!
 // ==========================================================
 const TELEGRAM_BOT_TOKEN = "8943646784:AAHGSWpQDa6O1DH32N4dHD49P9-pZbKWdx8";
-const TELEGRAM_CHAT_ID = "6209207346";
+const TELEGRAM_CHAT_ID = "992638774";
 
 // 📅 Дата начала отношений
 const START_DATE = new Date(2025, 1, 14, 0, 0, 0);
